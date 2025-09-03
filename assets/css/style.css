@@ -1,0 +1,193 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #d9d9d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* ✅ Allows more height if needed */
+    overflow-y: auto;  /* ✅ Enables vertical scrolling */
+}
+
+/* ✅ On small screens, remove vertical centering so scroll works */
+@media (max-width: 768px) {
+    body {
+        align-items: flex-start; /* ✅ Push content to top so scrolling works */
+        padding: 20px 0; /* ✅ Some top/bottom space */
+    }
+}
+
+/* ✅ Responsive Container */
+.container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        max-width: 90%;
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        max-width: 100%;
+        padding: 0 8px;
+    }
+}
+
+/* ✅ Form Styling */
+.form-wrapper {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.form-wrapper h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.profile-pic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.profile-pic img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+.profile-pic button {
+    background: #e6f0ff;
+    border: 1px solid #007bff;
+    color: #007bff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form {
+    text-align: left;
+}
+
+form label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.password-group {
+    display: flex;
+    gap: 10px;
+}
+
+.password-group div {
+    flex: 1;
+}
+
+small {
+    display: block;
+    color: #666;
+}
+
+.signup-btn {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.signup-btn:hover {
+    background: #0056b3;
+}
+
+.error {
+    color: red;
+}
+
+/* ✅ Responsive Adjustments */
+
+/* Tablets (below 768px) */
+@media (max-width: 768px) {
+    .form-wrapper {
+        padding: 20px;
+    }
+
+    .form-wrapper h2 {
+        font-size: 1.3rem;
+    }
+
+    .profile-pic img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .password-group {
+        flex-direction: column; /* ✅ Stack vertically */
+        gap: 0;
+    }
+}
+
+/* Small Mobile (below 480px) */
+@media (max-width: 480px) {
+    body {
+        padding: 5px; /* ✅ Prevents overflow */
+    }
+
+    .form-wrapper {
+        padding: 15px;
+    }
+
+    .form-wrapper h2 {
+        font-size: 1.2rem;
+    }
+
+    .profile-pic img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .profile-pic button {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+    form input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .signup-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+}

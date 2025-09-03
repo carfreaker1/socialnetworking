@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Network • Profile & Posts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0b1220; /* deep navy */
+      --card: #111a2b; /* darker slate */
+      --muted: #8ea0b8; /* blue gray */
+      --text: #eaf2ff; /* off-white */
+      --brand: #5b9dff; /* azure */
+      --brand-2: #7ef6ff; /* cyan accent */
+      --danger: #ff6b6b;
+      --success: #2bd576;
+      --ring: rgba(126,246,255,.25);
+      --shadow: 0 20px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(91,157,255,.15), transparent 60%),
+                  radial-gradient(900px 500px at 110% 10%, rgba(126,246,255,.12), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      letter-spacing: .2px;
+    }
+
+    .wrap{
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px 60px;
+    }
+
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .brand{
+      font-weight: 800; font-size: 28px; letter-spacing:.3px;
+      display:flex; align-items:center; gap:12px;
+    }
+    .brand .dot{width:10px;height:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));border-radius:999px;box-shadow:0 0 0 6px rgba(126,246,255,.08)}
+    .hint{color:var(--muted);font-size:14px}
+
+    .grid{
+      display:grid; grid-template-columns: 320px 1fr; gap: 24px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns: 1fr}
+    }
+
+    /* Card */
+    .card{
+      background: linear-gradient(180deg, rgba(17,26,43,.9), rgba(17,26,43,.8));
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(126,246,255,.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .card + .card{margin-top: 16px}
+
+    /* PROFILE */
+    .profile{
+      position:sticky; top:16px;
+    }
+    .avatar-wrap{position:relative; width:104px; height:104px; border-radius:24px; overflow:hidden;}
+    .avatar{
+      width:100%; height:100%; object-fit:cover; display:block;
+      border: 1px solid rgba(126,246,255,.15);
+    }
+    .avatar-upload{
+      position:absolute; inset:auto 8px 8px auto; background:rgba(11,18,32,.8);
+      border:1px solid rgba(126,246,255,.3); color:var(--text); font-size:12px;
+      padding:6px 8px; border-radius:10px; display:flex; align-items:center; gap:6px; cursor:pointer;
+      transition:.2s; backdrop-filter: blur(6px);
+    }
+    .avatar-upload:hover{ transform: translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.35)}
+    .profile h3{margin:12px 0 4px; font-size:20px}
+    .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(126,246,255,.08);border:1px solid rgba(126,246,255,.15);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted)}
+
+    .field{margin:14px 0; padding:10px 12px; border:1px solid rgba(126,246,255,.12); border-radius:14px; background:rgba(255,255,255,.02); position:relative}
+    .field small{display:block; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.6px}
+    .field .value{display:flex; align-items:center; gap:8px; margin-top:6px; font-weight:600}
+    .field.editable:hover{border-color:rgba(126,246,255,.4); box-shadow:0 0 0 4px var(--ring)}
+    .edit-icon{margin-left:auto; opacity:0; transition:.2s; font-size:12px; color:var(--brand)}
+    .field.editable:hover .edit-icon{opacity:1}
+
+    .profile-actions{display:flex; gap:10px; margin-top:10px}
+    .btn{appearance:none; border:none; background:linear-gradient(135deg,var(--brand),var(--brand-2)); color:#06101e; font-weight:700; padding:10px 14px; border-radius:12px; cursor:pointer; transition:.2s}
+    .btn.secondary{background:transparent;color:var(--text);border:1px solid rgba(126,246,255,.2)}
+    .btn:hover{transform:translateY(-1px); box-shadow:0 10px 24px rgba(126,246,255,.25)}
+
+    /* COMPOSER */
+    .composer h4{margin:4px 0 12px}
+    .textarea{
+      background: rgba(255,255,255,.02); border:1px solid rgba(126,246,255,.12); border-radius:14px; padding:12px; min-height:90px; color:var(--text); width:100%; resize:vertical; outline:none;
+    }
+    .textarea:focus{box-shadow:0 0 0 4px var(--ring); border-color: rgba(126,246,255,.4)}
+
+    .dropzone{margin-top:12px; border:1px dashed rgba(126,246,255,.25); border-radius:14px; padding:14px; text-align:center; color:var(--muted); cursor:pointer}
+    .dropzone.drag{background:rgba(126,246,255,.08);}
+    .preview{margin-top:10px; display:flex; gap:10px; flex-wrap:wrap}
+    .preview img{width:160px; height:110px; object-fit:cover; border-radius:12px; border:1px solid rgba(126,246,255,.15)}
+
+    .actions{display:flex; gap:10px; justify-content:flex-end; margin-top:12px}
+
+    /* FEED */
+    .post{display:grid; grid-template-columns: 48px 1fr auto; gap:12px; padding:14px; border-radius:16px; border:1px solid rgba(126,246,255,.1); background:rgba(255,255,255,.02)}
+    .post + .post{margin-top:14px}
+    .post .avatar-sm{width:48px; height:48px; border-radius:12px; object-fit:cover; border:1px solid rgba(126,246,255,.15)}
+    .post .meta{color:var(--muted); font-size:12px}
+    .post .img{margin-top:10px; border-radius:14px; overflow:hidden; border:1px solid rgba(126,246,255,.12)}
+    .post .img img{width:100%; display:block; object-fit:cover; max-height:420px}
+    .post .controls{display:flex; gap:12px; margin-top:10px}
+    .icon-btn{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:12px; cursor:pointer; border:1px solid rgba(126,246,255,.18); background:rgba(126,246,255,.06); color:var(--text)}
+    .icon-btn:hover{transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.35)}
+    .icon-btn.danger{border-color: rgba(255,107,107,.22); background: rgba(255,107,107,.08)}
+
+    .ghost{opacity:.6}
+
+    /* Modal */
+    .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(4,8,16,.6); backdrop-filter: blur(4px); z-index:50}
+    .modal.active{display:flex}
+    .modal .dialog{width:min(520px, 92vw); background:var(--card); border:1px solid rgba(126,246,255,.15); border-radius:18px; box-shadow:var(--shadow); padding:18px}
+    .row{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
+    .input{width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(126,246,255,.18); background:rgba(255,255,255,.02); color:var(--text); outline:none}
+    .input:focus{box-shadow:0 0 0 4px var(--ring); border-color: rgba(126,246,255,.4)}
+
+    /* Toast */
+    .toast{position:fixed; right:18px; bottom:18px; background:var(--card); border:1px solid rgba(126,246,255,.25); border-radius:14px; padding:12px 14px; box-shadow:var(--shadow); display:none}
+    .toast.show{display:block}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand"><span class="dot"></span> Social Network</div>
+      <div class="hint">Demo UI • AJAX-ready • No page reloads</div>
+    </header>
+
+    <div class="grid">
+      <!-- PROFILE SIDEBAR -->
+      <aside class="profile">
+        <div class="card">
+          <div class="avatar-wrap">
+            <img id="profilePhoto" class="avatar" alt="Avatar" src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=640&auto=format&fit=crop" />
+            <label class="avatar-upload">
+              <input id="profilePhotoInput" type="file" accept="image/*" hidden>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 21h16M12 17l8-8-4-4-8 8v4h4z" stroke="currentColor" stroke-width="2"/></svg>
+              Change
+            </label>
+          </div>
+
+          <h3 id="displayName">John Doe</h3>
+          <span class="badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l10 6-10 6L2 9l10-6zm0 12l10 6-10 6-10-6 10-6z" stroke="currentColor" stroke-width="1.5"/></svg>
+            Member
+          </span>
+
+          <div class="field editable" data-edit="name">
+            <small>Name</small>
+            <div class="value">
+              <span id="nameValue">John Doe</span>
+              <span class="edit-icon">✎</span>
+            </div>
+          </div>
+          <div class="field">
+            <small>Email</small>
+            <div class="value" id="emailValue">john@doe.com</div>
+          </div>
+          <div class="field editable" data-edit="age">
+            <small>Age</small>
+            <div class="value">
+              <span id="ageValue">28</span>
+              <span class="edit-icon">✎</span>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button class="btn" id="openEdit">Edit Profile</button>
+            <button class="btn secondary" id="shareProfile">Share</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- FEED AREA -->
+      <main>
+        <!-- COMPOSER -->
+        <section class="card composer">
+          <h4>Add Post</h4>
+          <textarea id="postText" class="textarea" placeholder="What's happening?"></textarea>
+          <div id="postDrop" class="dropzone">Click or drag an image here</div>
+          <input id="postImage" type="file" accept="image/*" hidden>
+          <div id="postPreview" class="preview"></div>
+          <div class="actions">
+            <button id="postBtn" class="btn">Post</button>
+          </div>
+        </section>
+
+        <!-- FEED -->
+        <section id="feed"></section>
+      </main>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div id="editModal" class="modal" aria-hidden="true">
+    <div class="dialog">
+      <h3 style="margin:0 0 10px">Edit Profile</h3>
+      <div class="row">
+        <div>
+          <label style="font-size:12px;color:var(--muted)">Name</label>
+          <input id="editName" class="input" placeholder="Your name" />
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--muted)">Age</label>
+          <input id="editAge" type="number" min="1" class="input" placeholder="Age" />
+        </div>
+      </div>
+      <div class="actions" style="margin-top:14px">
+        <button class="btn secondary" id="cancelEdit">Cancel</button>
+        <button class="btn" id="saveEdit">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    /* =========================
+       CONFIG
+    ========================== */
+    const USE_MOCK = true; // set to false when backend is ready
+
+    // Backend endpoints (PHP suggested)
+    const API = {
+      getProfile: 'api/get_profile.php',
+      updateProfile: 'api/update_profile.php',
+      uploadAvatar: 'api/upload_profile_photo.php',
+      getPosts: 'api/get_posts.php',
+      createPost: 'api/create_post.php',
+      deletePost: 'api/delete_post.php',
+      reactPost: 'api/react_post.php',
+    };
+
+    /* =========================
+       UTILITIES
+    ========================== */
+    const $ = sel => document.querySelector(sel);
+    const el = (tag, cls) => {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      return n;
+    }
+
+    const toast = (msg) => {
+      const t = $('#toast');
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    const fetchJSON = (url, options) => fetch(url, options).then(r => r.json());
+
+    /* =========================
+       MOCK STORE (for demo only)
+    ========================== */
+    const mock = (() => {
+      let profile = { id: 1, name: 'John Doe', email: 'john@doe.com', age: 28, avatar: $('#profilePhoto').src };
+      let seq = 3;
+      let posts = [
+        { id: 1, userId: 1, name: 'John Doe', avatar: profile.avatar, text: 'Innovation, teamwork, and growth—what we stand for! Discover what makes us unique.', image: 'https://images.unsplash.com/photo-1529336953121-ad5a0d43d0d2?q=80&w=1200&auto=format&fit=crop', created_at: '2024-11-20', likes: 25, dislikes: 10, reaction: 0 },
+        { id: 2, userId: 1, name: 'John Doe', avatar: profile.avatar, text: 'Building a better tomorrow, together. Be part of our journey!', image: 'https://images.unsplash.com/photo-1490821873433-7464c0894447?q=80&w=1200&auto=format&fit=crop', created_at: '2024-11-19', likes: 25, dislikes: 10, reaction: 0 },
+      ];
+      return {
+        getProfile: async () => ({ status: 'success', data: profile }),
+        updateProfile: async (data) => { profile = { ...profile, ...data }; return { status: 'success', data: profile } },
+        uploadAvatar: async (fileUrl) => { profile.avatar = fileUrl; posts = posts.map(p => ({...p, avatar: fileUrl})); return { status: 'success', url: fileUrl } },
+        getPosts: async () => ({ status: 'success', data: posts }),
+        createPost: async (payload) => { const p = { id: ++seq, userId: 1, name: profile.name, avatar: profile.avatar, likes:0, dislikes:0, reaction:0, created_at: new Date().toISOString().slice(0,10), ...payload }; posts.unshift(p); return { status: 'success', data: p } },
+        deletePost: async (id) => { posts = posts.filter(p => p.id !== id); return { status: 'success' } },
+        reactPost: async (id, action) => {
+          const p = posts.find(x => x.id === id);
+          if (!p) return { status:'error' };
+          // reaction: 1 like, -1 dislike, 0 none
+          const prev = p.reaction;
+          if (action === 'like') {
+            if (prev === 1) { p.likes--; p.reaction = 0; }
+            else { if (prev === -1) p.dislikes--; p.likes++; p.reaction = 1; }
+          } else if (action === 'dislike') {
+            if (prev === -1) { p.dislikes--; p.reaction = 0; }
+            else { if (prev === 1) p.likes--; p.dislikes++; p.reaction = -1; }
+          }
+          return { status:'success', data:{ likes:p.likes, dislikes:p.dislikes, reaction:p.reaction }};
+        }
+      }
+    })();
+
+    /* =========================
+       DATA LAYER (switch mock/real)
+    ========================== */
+    const api = {
+      getProfile: async () => USE_MOCK ? mock.getProfile() : fetchJSON(API.getProfile),
+      updateProfile: async (payload) => USE_MOCK ? mock.updateProfile(payload) : fetchJSON(API.updateProfile, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) }),
+      uploadAvatar: async (file) => {
+        if (USE_MOCK) {
+          const url = URL.createObjectURL(file);
+          return mock.uploadAvatar(url);
+        } else {
+          const fd = new FormData(); fd.append('photo', file);
+          return fetchJSON(API.uploadAvatar, { method:'POST', body: fd });
+        }
+      },
+      getPosts: async () => USE_MOCK ? mock.getPosts() : fetchJSON(API.getPosts),
+      createPost: async ({ text, imageFile }) => {
+        if (USE_MOCK) {
+          const url = imageFile ? URL.createObjectURL(imageFile) : '';
+          return mock.createPost({ text, image: url });
+        } else {
+          const fd = new FormData(); fd.append('text', text); if (imageFile) fd.append('image', imageFile);
+          return fetchJSON(API.createPost, { method:'POST', body: fd });
+        }
+      },
+      deletePost: async (id) => USE_MOCK ? mock.deletePost(id) : fetchJSON(API.deletePost + `?id=${id}`, { method:'DELETE' }),
+      reactPost: async (id, action) => USE_MOCK ? mock.reactPost(id, action) : fetchJSON(API.reactPost, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id, action }) })
+    };
+
+    /* =========================
+       RENDERERS
+    ========================== */
+    const feed = $('#feed');
+
+    const renderPost = (p) => {
+      const card = el('article', 'card post');
+      card.dataset.id = p.id;
+
+      const av = el('img', 'avatar-sm'); av.src = p.avatar; av.alt = 'avatar';
+      const content = el('div');
+      const kill = el('button', 'icon-btn danger'); kill.innerHTML = '🗑 Delete';
+
+      // header
+      const h = el('div');
+      const title = el('div'); title.innerHTML = `<strong>${p.name}</strong>`;
+      const meta = el('div', 'meta'); meta.textContent = `Posted on • ${p.created_at}`;
+      h.append(title, meta);
+
+      const text = el('div'); text.style.marginTop = '6px'; text.textContent = p.text || '';
+      const imgWrap = el('div', 'img');
+      if (p.image) { const im = el('img'); im.src = p.image; imgWrap.append(im); }
+
+      // controls
+      const ctrls = el('div', 'controls');
+      const likeBtn = el('button', 'icon-btn'); likeBtn.innerHTML = `👍 <span class="like-count">${p.likes}</span>`;
+      const dislikeBtn = el('button', 'icon-btn'); dislikeBtn.innerHTML = `👎 <span class="dislike-count">${p.dislikes}</span>`;
+      if (p.reaction === 1) likeBtn.classList.add('ghost');
+      if (p.reaction === -1) dislikeBtn.classList.add('ghost');
+
+      likeBtn.addEventListener('click', async () => {
+        likeBtn.disabled = true; dislikeBtn.disabled = true;
+        const r = await api.reactPost(p.id, 'like');
+        likeBtn.disabled = dislikeBtn.disabled = false;
+        if (r.status === 'success') {
+          card.querySelector('.like-count').textContent = r.data.likes;
+          card.querySelector('.dislike-count').textContent = r.data.dislikes;
+          likeBtn.classList.toggle('ghost', r.data.reaction === 1);
+          dislikeBtn.classList.toggle('ghost', r.data.reaction === -1);
+        }
+      });
+      dislikeBtn.addEventListener('click', async () => {
+        likeBtn.disabled = true; dislikeBtn.disabled = true;
+        const r = await api.reactPost(p.id, 'dislike');
+        likeBtn.disabled = dislikeBtn.disabled = false;
+        if (r.status === 'success') {
+          card.querySelector('.like-count').textContent = r.data.likes;
+          card.querySelector('.dislike-count').textContent = r.data.dislikes;
+          likeBtn.classList.toggle('ghost', r.data.reaction === 1);
+          dislikeBtn.classList.toggle('ghost', r.data.reaction === -1);
+        }
+      });
+
+      kill.addEventListener('click', async () => {
+        kill.disabled = true; kill.textContent = 'Deleting…';
+        const r = await api.deletePost(p.id);
+        if (r.status === 'success') { card.remove(); toast('Post removed'); }
+        else { kill.disabled = false; kill.textContent = '🗑 Delete'; }
+      });
+
+      content.append(h, text, (p.image ? imgWrap : null), ctrls);
+      ctrls.append(likeBtn, dislikeBtn);
+
+      card.append(av, content, kill);
+      return card;
+    }
+
+    const renderFeed = (items) => {
+      feed.innerHTML = '';
+      if (!items.length) {
+        const empty = el('div', 'card');
+        empty.textContent = 'No posts yet. Be the first!';
+        feed.append(empty); return;
+      }
+      items.forEach(p => feed.append(renderPost(p)));
+    }
+
+    /* =========================
+       INIT & EVENTS
+    ========================== */
+    const init = async () => {
+      // load profile
+      const pr = await api.getProfile();
+      if (pr.status === 'success') {
+        const d = pr.data;
+        $('#displayName').textContent = d.name;
+        $('#nameValue').textContent = d.name;
+        $('#emailValue').textContent = d.email;
+        $('#ageValue').textContent = d.age;
+        $('#profilePhoto').src = d.avatar || $('#profilePhoto').src;
+      }
+
+      // load feed
+      const fr = await api.getPosts();
+      if (fr.status === 'success') renderFeed(fr.data);
+    }
+
+    // Edit modal
+    const openModal = () => { $('#editModal').classList.add('active'); $('#editName').value = $('#nameValue').textContent; $('#editAge').value = $('#ageValue').textContent }
+    const closeModal = () => { $('#editModal').classList.remove('active') }
+
+    $('#openEdit').addEventListener('click', openModal);
+    $('#cancelEdit').addEventListener('click', closeModal);
+    document.querySelectorAll('.field.editable').forEach(f => f.addEventListener('click', openModal));
+
+    $('#saveEdit').addEventListener('click', async () => {
+      const name = $('#editName').value.trim();
+      const age = parseInt($('#editAge').value, 10) || '';
+      if (!name) return toast('Name is required');
+      const r = await api.updateProfile({ name, age });
+      if (r.status === 'success') {
+        $('#displayName').textContent = r.data.name;
+        $('#nameValue').textContent = r.data.name;
+        $('#ageValue').textContent = r.data.age;
+        toast('Profile updated'); closeModal();
+      }
+    });
+
+    // Avatar upload
+    $('#profilePhotoInput').addEventListener('change', async (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      const r = await api.uploadAvatar(file);
+      if (r.status === 'success') {
+        $('#profilePhoto').src = r.url; toast('Photo updated');
+        // also update avatars in feed
+        document.querySelectorAll('.post .avatar-sm').forEach(i => i.src = r.url);
+      }
+    });
+
+    // Composer
+    const drop = $('#postDrop');
+    const postInput = $('#postImage');
+    const preview = $('#postPreview');
+
+    drop.addEventListener('click', () => postInput.click());
+    ;['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e=>{e.preventDefault(); drop.classList.add('drag')}));
+    ;['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e=>{e.preventDefault(); drop.classList.remove('drag')}));
+    drop.addEventListener('drop', (e) => {
+      const file = e.dataTransfer.files?.[0];
+      if (file) handlePreview(file);
+    });
+    postInput.addEventListener('change', e => { const file = e.target.files[0]; if (file) handlePreview(file) });
+
+    let composerImage = null;
+    function handlePreview(file){
+      composerImage = file;
+      preview.innerHTML = '';
+      const img = new Image(); img.src = URL.createObjectURL(file);
+      img.onload = () => URL.revokeObjectURL(img.src);
+      preview.append(img);
+    }
+
+    $('#postBtn').addEventListener('click', async () => {
+      const text = $('#postText').value.trim();
+      if (!text && !composerImage) return toast('Add text or an image');
+      $('#postBtn').disabled = true; $('#postBtn').textContent = 'Posting…';
+      const r = await api.createPost({ text, imageFile: composerImage });
+      $('#postBtn').disabled = false; $('#postBtn').textContent = 'Post';
+      if (r.status === 'success') {
+        feed.prepend(renderPost(r.data));
+        $('#postText').value = ''; preview.innerHTML=''; composerImage = null;
+        toast('Posted!');
+      }
+    });
+
+    // Share profile (copy link)
+    $('#shareProfile').addEventListener('click', async ()=>{
+      try { await navigator.clipboard.writeText(location.href + '#profile'); toast('Profile link copied') } catch { toast('Could not copy link') }
+    })
+
+    // Click avatar button to trigger file input
+    document.querySelector('.avatar-upload').addEventListener('click', () => $('#profilePhotoInput').click());
+
+    init();
+  </script>
+</body>
+</html>
