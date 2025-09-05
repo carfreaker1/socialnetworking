@@ -43,5 +43,13 @@ class LikeDislike {
         $stmt->execute([$postId]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getUserAction($userId, $postId) {
+        $sql = "SELECT action FROM likes_dislikes WHERE user_id=? AND post_id=?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$userId, $postId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? $row['action'] : null;
+    }
 }
 ?>

@@ -20,7 +20,9 @@
      
             <small>Use A-Z, a-z, 0-9, !@#$%^&* in password</small>
 
-            <button type="submit" class="signup-btn">Sign Up</button>
+            <button type="submit" class="signup-btn" style="margin-top: 4px;">Login</button>
+            <a href="signup.php">New User? Register</a>
+
         </form>
     </div>
 </div>

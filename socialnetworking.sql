@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 03, 2025 at 10:44 PM
+-- Generation Time: Sep 05, 2025 at 03:07 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -34,6 +34,15 @@ CREATE TABLE `likes_dislikes` (
   `action` enum('like','dislike') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `likes_dislikes`
+--
+
+INSERT INTO `likes_dislikes` (`id`, `post_id`, `user_id`, `action`) VALUES
+(155, 71, 82, 'like'),
+(161, 72, 82, 'dislike'),
+(162, 73, 82, 'like');
+
 -- --------------------------------------------------------
 
 --
@@ -43,10 +52,22 @@ CREATE TABLE `likes_dislikes` (
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `content` text DEFAULT NULL,
+  `content` varchar(255) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`id`, `user_id`, `content`, `image`, `created_at`) VALUES
+(69, 83, 'Black Ferrari', '1757073538.jpg', '2025-09-05 11:58:58'),
+(70, 83, 'G Wagon', '1757073554.jpg', '2025-09-05 11:59:14'),
+(71, 82, 'Ducati', '1757073587.jpg', '2025-09-05 11:59:47'),
+(72, 82, 'RE', '1757073638.jpg', '2025-09-05 12:00:38'),
+(73, 82, 'G g', '1757073664.jpg', '2025-09-05 12:01:04'),
+(74, 82, 'BEST CAR', '1757076653.jpg', '2025-09-05 12:50:53');
 
 -- --------------------------------------------------------
 
@@ -69,8 +90,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `full_name`, `dob`, `email`, `password`, `image`, `created_at`) VALUES
-(80, 'Aman Sharmas', '2002-10-11', 'superadmin@gmail.com', '$2y$10$2xwsZGguhQzrMMAABXF.tO8GD7nQ5qi46Bo6hObFzWA4.n9kZEcY6', 'uploads/1756837599_b3_0.jpg', '2025-09-02 18:26:39'),
-(81, 'adfadsd', '2025-09-18', 'superadmin11@gmail.com', '$2y$10$EVQyl2qnrjuMLknx.ffxOetYVR2eeeQXGAuu5X1k3wsaMAWiNNbkq', 'uploads/1756838054_b3_0.jpg', '2025-09-02 18:34:14');
+(82, 'Aman Sharma', '2025-09-05', 'superadmin@gmail.com', '$2y$10$PHR5efKn.41KDiJVgKbltuuFetFsiK6Fl4HysGKdDDO4VL4nYVdNG', 'uploads/profile/1757076368.jpg', '2025-09-04 15:52:20'),
+(83, 'Gaurav', '2025-09-13', 'gaurav@gmail.com', '$2y$10$2CZi38KppXQrOlIKAit.TusJKLXGCMRqH5V/3zNR2w/Fe1Bv6ZaEu', 'uploads/profile/1757052957_gaurav profile-Photoroom (2).png', '2025-09-05 06:15:57');
 
 --
 -- Indexes for dumped tables
@@ -106,19 +127,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `likes_dislikes`
 --
 ALTER TABLE `likes_dislikes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- Constraints for dumped tables

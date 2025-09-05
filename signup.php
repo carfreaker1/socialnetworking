@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <label>Re - Password</label>
-                    <input name="repassword" type="password" id="repassword" oninput="validateConfirmPassword()" required>
+                    <input name="repassword" type="text" id="repassword" oninput="validateConfirmPassword()" required>
                     <small class="error" id="repasswordError" style="color:red;"></small>
                 </div>
             </div>

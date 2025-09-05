@@ -64,19 +64,28 @@ class User {
         $success = $stmt->execute([$name, $dob, $id]);
         // header('Content-Type: application/json');
 
-    if ($success) {
-        echo json_encode([
-            'status' => 'success',
-            'message' => 'Update Successfully'
-        ]);
-    } else {
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Failed to update user'
-        ]);
+        if ($success) {
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Update Successfully'
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Failed to update user'
+            ]);
+        }
+        exit;
     }
-    exit;
+
+
+    // For Profile pic
+    public function updateProfileImage($userId, $imagePath) {
+        $stmt = $this->conn->prepare("UPDATE users SET image = ? WHERE id = ?");
+        return $stmt->execute([$imagePath, $userId]);
     }
+
+    
     // Delete User
     public function delete($id) {
         $stmt = $this->conn->prepare("DELETE FROM users WHERE id=?");

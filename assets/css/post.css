@@ -359,17 +359,27 @@ main {
 
 .post .img {
     margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 14px;
     overflow: hidden;
-    border: 1px solid rgba(126, 246, 255, .12)
+    border: 1px solid rgba(126, 246, 255, 0.12);
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
 }
 
 .post .img img {
     width: 100%;
+    max-width: 350px;
+    max-height: 420px;
+    height: auto;
     display: block;
     object-fit: cover;
-    max-height: 420px
+    border-radius: 14px;
 }
+
+
 
 .post .controls {
     display: flex;
@@ -465,3 +475,77 @@ main {
 .toast.show {
     display: block
 }
+
+
+
+#notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #4caf50;
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.4s ease;
+    z-index: 9999;
+}
+
+#notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#notification.error {
+    background: #f44336;
+}
+.icon-btn.liked {
+    background-color: green;
+    color: white;
+}
+
+.icon-btn.disliked {
+    background-color: red;
+    color: white;
+}
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal.show {
+    display: flex;
+  }
+  .dialog {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+  }
+  .input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+  }
+  .actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  .btn {
+    padding: 8px 14px;
+    cursor: pointer;
+  }
+ 
+  
