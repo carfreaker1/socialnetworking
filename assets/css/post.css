@@ -36,6 +36,8 @@ body {
 
     color: var(--text);
     letter-spacing: .2px;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .wrap {
@@ -101,7 +103,7 @@ header {
     display: grid;
     grid-template-columns: 300px 1fr;
     gap: 1rem;
-    height: calc(100vh - 80px); /* Adjust for header height */
+    height: calc(100vh - 140px); /* Adjust for header height */
     overflow: hidden;
 }
 
@@ -359,27 +361,17 @@ main {
 
 .post .img {
     margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
     border-radius: 14px;
     overflow: hidden;
-    border: 1px solid rgba(126, 246, 255, 0.12);
-    display: flex;
-    justify-content: center;
-    max-width: 100%;
+    border: 1px solid rgba(126, 246, 255, .12)
 }
 
 .post .img img {
     width: 100%;
-    max-width: 350px;
-    max-height: 420px;
-    height: auto;
     display: block;
     object-fit: cover;
-    border-radius: 14px;
+    max-height: 420px
 }
-
-
 
 .post .controls {
     display: flex;
@@ -547,5 +539,5 @@ main {
     padding: 8px 14px;
     cursor: pointer;
   }
- 
+  
   
