@@ -85,12 +85,12 @@ $('#loginForm').submit(function(e) {
         }
     });
 });
-console.log(typeof $); // Should print "function"
-console.log($("#logoutBtn").length); // Should print 1
+// console.log(typeof $); // Should print "function"
+// console.log($("#logoutBtn").length); // Should print 1
 $(document).ready(function(){
-    console.log("jQuery Loaded");
+    // console.log("jQuery Loaded");
     $("#logoutBtn").click(function(){
-        alert('fa');
+        // alert('fa');
         $.ajax({
             url: "ajax.php",
             type: "POST",
